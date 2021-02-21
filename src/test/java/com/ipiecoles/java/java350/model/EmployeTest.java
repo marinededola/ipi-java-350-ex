@@ -127,13 +127,14 @@ public class EmployeTest {
         Assertions.assertThat(salaireAugmente).isGreaterThanOrEqualTo(1500d);
     }
 
+    //Test paramétré CSV augmenterSalaire
     @ParameterizedTest(name = "pourcentage{0}, salaire {1}, salaireAugmente{2}")
     @CsvSource({"10,'160d',176d",
             "-1,'160d',160d",
             "0.5,'160d',1608",
             "25,'160d',200d"})
 
-    public void testAaugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double salaireAugmente){
+    public void testAugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double salaireAugmente){
         //GIVEN
         Employe employe = new Employe("Doe","John",null,LocalDate.now(),salaire,1,1.0);
         //WHEN
@@ -141,5 +142,23 @@ public class EmployeTest {
         //THEN
         Assertions.assertThat(salaireAugmente).isEqualTo(salaireAugmente);
     }
+
+    //Test paramétré CSV nombre RTT
+    @ParameterizedTest(name = "dateReference{0}, rtt{1}")
+    @CsvSource({"2019-01-01,8",
+            "2021-01-01,10",
+            "2022-01-01,10",
+            "2032-01-01,11",
+            "2012-01-01,12"})
+    public void testGetNbrRtt(LocalDate dateReference, int rtt){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+        //WHEN
+        int nbRtt = employe.getNbRtt(dateReference);
+        //THEN
+        Assertions.assertThat(nbRtt).isEqualTo(rtt);
+
+    }
+
 
 }
