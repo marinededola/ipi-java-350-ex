@@ -1,5 +1,7 @@
 package com.ipiecoles.java.java350.model;
 
+import org.apache.logging.log4j.util.StringBuilders;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,6 +50,10 @@ public class Employe {
      * @return
      */
     public Integer getNombreAnneeAnciennete() {
+
+        if(this.dateEmbauche == null || dateEmbauche.isAfter(LocalDate.now())){
+            return null;
+        }
         return LocalDate.now().getYear() - dateEmbauche.getYear();
     }
 
@@ -224,5 +230,19 @@ case SATURDAY:var = var + 1;
     @Override
     public int hashCode() {
         return Objects.hash(id, nom, prenom, matricule, dateEmbauche, salaire, performance);
+    }
+
+    @Override
+    public String toString() {
+        return "Employe{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", matricule='" + matricule + '\'' +
+                ", dateEmbauche=" + dateEmbauche +
+                ", salaire=" + salaire +
+                ", performance=" + performance +
+                ", tempsPartiel=" + tempsPartiel +
+                '}';
     }
 }
