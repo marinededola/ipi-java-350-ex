@@ -73,4 +73,60 @@ public class EmployeTest {
         Assertions.assertThat(prime).isEqualTo(primeAttendue);
     }
 
+
+    //Test si le salaire n'est pas null
+    @Test
+    public void testSalaireIsNull(){
+
+        //GIVEN
+        Employe employe = new Employe();
+        employe.setSalaire(null);
+        //WHEN
+        //THEN
+        Assertions.assertThat(employe.getSalaire()).isNull();
+    }
+
+
+    // Salaire augmenté par rapport au salaire de base
+    @Test
+    public void testSalaireSupSalaireBase(){
+
+        //GIVEN
+        Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().minusYears(6),1600d,1,1.0);
+        //WHEN
+        //THEN
+        Assertions.assertThat( employe.getSalaire()).isGreaterThanOrEqualTo(Entreprise.SALAIRE_BASE);
+    }
+
+
+    //Test augmentation du salaire
+    @Test
+    public void testAugmenterSalairePourcentage0(){
+
+        //GIVEN
+        Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().minusYears(6),1500d,1,1.0);
+        //WHEN
+        employe.augmenterSalaire(10);
+        Double salaireAugmente = employe.getSalaire();
+        //THEN
+        Assertions.assertThat(salaireAugmente).isEqualTo(1650d);
+    }
+
+
+    //Test si le salaire augmenté est supérieur au salaire initial
+    //Vérifie indirectement que le pourcentage en paramètre est positif
+    @Test
+    public void testSalaireIsAugmente(){
+
+        //GIVEN
+        Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().minusYears(6),1500d,1,1.0);
+        //WHEN
+        employe.augmenterSalaire(5);
+        Double salaireAugmente = employe.getSalaire();
+        //THEN
+        Assertions.assertThat(salaireAugmente).isGreaterThanOrEqualTo(1500d);
+    }
+
+
+
 }

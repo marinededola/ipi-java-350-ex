@@ -120,8 +120,12 @@ case SATURDAY:var = var + 1;
         return prime * this.tempsPartiel;
     }
 
-    //Augmenter salaire
-    //public void augmenterSalaire(double pourcentage){}
+    /**
+     * @param pourcentage pourcentage d'augmentation du salaire
+     * Augmentation du salaire actuel selon un pourcentage positif définit
+     */
+    public void augmenterSalaire(double pourcentage){
+    }
 
     public Long getId() {
         return id;
