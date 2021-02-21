@@ -128,19 +128,20 @@ public class EmployeTest {
     }
 
     //Test paramétré CSV augmenterSalaire
-    @ParameterizedTest(name = "pourcentage{0}, salaire {1}, salaireAugmente{2}")
+    @ParameterizedTest(name = "pourcentage{0}, salaire {1}, salaireFinal{2}")
     @CsvSource({"10,'160d',176d",
             "-1,'160d',160d",
-            "0.5,'160d',1608",
+            "0.5,'1600',1608",
             "25,'160d',200d"})
 
-    public void testAugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double salaireAugmente){
+    public void testAugmenterSalairePourcentageManyValue(Double pourcentage,Double salaire,Double salaireFinal){
         //GIVEN
         Employe employe = new Employe("Doe","John",null,LocalDate.now(),salaire,1,1.0);
         //WHEN
         employe.augmenterSalaire(pourcentage);
+        Double salaireAugmente = employe.getSalaire();
         //THEN
-        Assertions.assertThat(salaireAugmente).isEqualTo(salaireAugmente);
+        Assertions.assertThat(salaireFinal).isEqualTo(salaireAugmente);
     }
 
     //Test paramétré CSV nombre RTT
