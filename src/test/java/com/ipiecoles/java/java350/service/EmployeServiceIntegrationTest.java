@@ -43,7 +43,7 @@ public class EmployeServiceIntegrationTest {
         Assertions.assertThat(employe).isNotNull();
         Assertions.assertThat(employe.getNom()).isEqualTo(nom);
         Assertions.assertThat(employe.getPrenom()).isEqualTo(prenom);
-        Assertions.assertThat(employe.getSalaire()).isEqualTo(1825.46);
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(1825.464);
         Assertions.assertThat(employe.getTempsPartiel()).isEqualTo(1.0);
         Assertions.assertThat(employe.getDateEmbauche()).isEqualTo(LocalDate.now());
         Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");

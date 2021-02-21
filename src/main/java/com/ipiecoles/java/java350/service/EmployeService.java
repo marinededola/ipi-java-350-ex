@@ -71,7 +71,7 @@ public class EmployeService {
         Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), salaire, Entreprise.PERFORMANCE_BASE, tempsPartiel);
 
         employe = employeRepository.save(employe);
-        logger.info("Employé créé : {}", employe.toString());
+        logger.info("Employé créé : {}", employe);
 
         return employe;
 
