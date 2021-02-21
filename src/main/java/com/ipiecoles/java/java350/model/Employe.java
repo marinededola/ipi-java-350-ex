@@ -125,6 +125,14 @@ case SATURDAY:var = var + 1;
      * Augmentation du salaire actuel selon un pourcentage positif définit
      */
     public void augmenterSalaire(double pourcentage){
+        if(pourcentage >= 0.0){
+            if(this.salaire >= Entreprise.SALAIRE_BASE || this.salaire != null){
+                this.salaire = this.salaire + Math.round(pourcentage/100 * salaire);
+            }else  {
+                this.salaire = Entreprise.SALAIRE_BASE;
+                this.salaire = this.salaire + Math.round(pourcentage/100 * salaire);
+            }
+        }
     }
 
     public Long getId() {
