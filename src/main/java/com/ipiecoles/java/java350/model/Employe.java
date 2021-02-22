@@ -85,6 +85,45 @@ case SATURDAY:var = var + 1;
         return (int) Math.ceil((i1 - Entreprise.NB_JOURS_MAX_FORFAIT - var - Entreprise.NB_CONGES_BASE - monInt) * tempsPartiel);
     }
 
+
+    public Integer getNbRtt(LocalDate dateReference) {
+        int nbJoursAnnee = dateReference.isLeapYear() ? 366 : 365;
+        int nbSamediDimanche = 104;
+        switch (LocalDate.of(dateReference.getYear(), 1, 1).getDayOfWeek()) {
+            case THURSDAY:
+                if (dateReference.isLeapYear()) {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
+                break;
+            case FRIDAY:
+                if (dateReference.isLeapYear()) {
+                    nbSamediDimanche = nbSamediDimanche + 2;
+                }
+                else {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
+                break;
+            case SATURDAY:
+                nbSamediDimanche = nbSamediDimanche + 1;
+                break;
+            default:
+                nbSamediDimanche = 104;
+        }
+        int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(dateReference).stream().filter(localDate ->
+                localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
+        return (int) Math.ceil((
+                nbJoursAnnee
+                        - Entreprise.NB_JOURS_MAX_FORFAIT
+                        - nbSamediDimanche
+                        - Entreprise.NB_CONGES_BASE
+                        - nbJoursFeriesSemaine
+        ) * tempsPartiel);
+    }
+
+
+
+
+
     /**
      * Calcul de la prime annuelle selon la règle :
      * Pour les managers : Prime annuelle de base bonnifiée par l'indice prime manager
