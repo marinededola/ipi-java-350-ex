@@ -126,4 +126,21 @@ public class EmployeTest {
         Assertions.assertThat(salaireAugmente).isGreaterThanOrEqualTo(1500d);
     }
 
+
+    //Test paramétré CSV augmenterSalaire
+    @ParameterizedTest(name = "pourcentage{0}, salaire {1}, salaireFinal{2}")
+    @CsvSource({"10,'160d',176d",
+            "-1,'160d',160d",
+            "0.5,'1600',1608",
+            "25,'160d',200d"})
+
+    public void testAugmenterSalaireManyValue(Double pourcentage,Double salaire,Double salaireFinal){
+        //GIVEN
+        Employe employe = new Employe("Doe","John",null,LocalDate.now(),salaire,1,1.0);
+        //WHEN
+        employe.augmenterSalaire(pourcentage);
+        Double salaireAugmente = employe.getSalaire();
+        //THEN
+        Assertions.assertThat(salaireFinal).isEqualTo(salaireAugmente);
+    }
 }
