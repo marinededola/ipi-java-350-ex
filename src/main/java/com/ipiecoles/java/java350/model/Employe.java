@@ -65,38 +65,28 @@ public class Employe {
         return getNbRtt(LocalDate.now());
     }
 
+
+
     /**
-     *
-     * @param d
-     * @return
+     * Méthode qui calcule le nombre de jours de RTT dans une année
+     * Au pro-rata du taux d'activité du salarié
+     * Suivant la formule: Nombre de jours dans l'année - Nombre de jours travaillés dans l'année en plein temps
+     * - Nombre de samedi et dimanche dans l'année - Nombre de jours fériés ne tombant pas le week-end
+     * - Nombre de congés payés
+     * @param date choisie comme référence du calcul de RTT
+     * @return Nombre de jours de RTT à la date choisie en paramètre
      */
-    public Integer getNbRtt(LocalDate d){
-        int i1 = d.isLeapYear() ? 365 : 366;int var = 104;
-        switch (LocalDate.of(d.getYear(),1,1).getDayOfWeek()){
-        case THURSDAY: if(d.isLeapYear()) var =  var + 1; break;
-        case FRIDAY:
-        if(d.isLeapYear()) var =  var + 2;
-        else var =  var + 1;
-case SATURDAY:var = var + 1;
-                    break;
-        }
-        int monInt = (int) Entreprise.joursFeries(d).stream().filter(localDate ->
-                localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
-        return (int) Math.ceil((i1 - Entreprise.NB_JOURS_MAX_FORFAIT - var - Entreprise.NB_CONGES_BASE - monInt) * tempsPartiel);
-    }
-
-
-    public Integer getNbRtt(LocalDate dateReference) {
-        int nbJoursAnnee = dateReference.isLeapYear() ? 366 : 365;
+    public Integer getNbRtt(LocalDate date) {
+        int nbJoursAnnee = date.isLeapYear() ? 366 : 365;
         int nbSamediDimanche = 104;
-        switch (LocalDate.of(dateReference.getYear(), 1, 1).getDayOfWeek()) {
+        switch (LocalDate.of(date.getYear(), 1, 1).getDayOfWeek()) {
             case THURSDAY:
-                if (dateReference.isLeapYear()) {
+                if (date.isLeapYear()) {
                     nbSamediDimanche = nbSamediDimanche + 1;
                 }
                 break;
             case FRIDAY:
-                if (dateReference.isLeapYear()) {
+                if (date.isLeapYear()) {
                     nbSamediDimanche = nbSamediDimanche + 2;
                 }
                 else {
@@ -109,7 +99,7 @@ case SATURDAY:var = var + 1;
             default:
                 nbSamediDimanche = 104;
         }
-        int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(dateReference).stream().filter(localDate ->
+        int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(date).stream().filter(localDate ->
                 localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
         return (int) Math.ceil((
                 nbJoursAnnee
