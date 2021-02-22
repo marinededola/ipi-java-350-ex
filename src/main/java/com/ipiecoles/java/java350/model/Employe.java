@@ -120,8 +120,22 @@ case SATURDAY:var = var + 1;
         return prime * this.tempsPartiel;
     }
 
-    //Augmenter salaire
-    public void augmenterSalaire(double pourcentage){}
+    /**
+     * @param pourcentage pourcentage d'augmentation du salaire
+     * Augmentation du salaire actuel selon un pourcentage positif définit
+     * Grace au tests TDD, j'ai pu anticiper les différentes conditions de la méthode,
+     * liées au paramètre pourcentage et au salaire initial
+     */
+    public void augmenterSalaire(double pourcentage){
+        if(pourcentage >= 0.0){
+            if(this.salaire >= Entreprise.SALAIRE_BASE || this.salaire != null){
+                this.salaire = this.salaire + Math.round(pourcentage/100 * salaire);
+            }else  {
+                this.salaire = Entreprise.SALAIRE_BASE;
+                this.salaire = this.salaire + Math.round(pourcentage/100 * salaire);
+            }
+        }
+    }
 
     public Long getId() {
         return id;
