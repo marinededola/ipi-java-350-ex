@@ -8,6 +8,8 @@ import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -196,20 +198,48 @@ public class EmployeServiceTest {
 
     @Test
     public void testCalculPerformanceCommercialeMatriculeDontExist() {
-        //given
+        //GIVE
         String matricule = "C35353";
 
         Long caTraite = 500L;
         Long objectifCa = 500L;
 
-        //when
+        //WHEN
         try {
             employeService.calculPerformanceCommercial(matricule,caTraite, objectifCa);
             Assertions.fail("La méthode calculPerformanceCommercial doit lancer une exception");
         } catch (EmployeException e) {
-            //Then
+            //THEN
             Assertions.assertThat(e.getMessage()).isEqualTo("Le matricule C35353 n'existe pas !");
         }
+    }
+
+
+    //Test paramétré calcul performance commerciale
+    @ParameterizedTest
+    @CsvSource({
+            "2, 600, 1000, 2", //Cas 1 / Autres
+            "4, 800, 1300, 2", //Cas 2
+            "3, 1000, 1000, 4", //Cas 3
+            "4, 720, 600, 6", //Cas 4
+            "5, 10000, 600, 10", //Cas 5
+    })
+    void testCalculPerformanceCommerciale(Integer performanceInitiale, Long caTraite, Long objectifCa,  Integer performanceAttendue) throws EmployeException {
+
+        //GIVEN
+        Employe employe;
+        String matricule  = "C06432";
+
+        Mockito.when(employeRepository.findByMatricule(matricule)).thenReturn(
+                employe = new Employe("Doe", "Joe", matricule, LocalDate.now(), 160d, performanceInitiale, 1.0)
+        );
+
+        //WHEN
+        employeService.calculPerformanceCommercial(employe.getMatricule(),caTraite, objectifCa);
+        Integer performanceRecupere = employe.getPerformance();
+
+        //THEN
+        Assertions.assertThat(performanceRecupere).isEqualTo(performanceAttendue);
     }
 
 }
