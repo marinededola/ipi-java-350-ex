@@ -172,46 +172,6 @@ import java.time.LocalDate;
     }
 
 
-
-    //Test si le matricule en paramètre est null
-    @Test
-     void testCalculPerformanceCommercialeMatriculeIsNull() {
-
-        //GIVEN
-        String matricule = "null";
-        Long caTraite = 500L;
-        Long objectifCa = 500L;
-
-        //WHEN
-        try {
-            employeService.calculPerformanceCommercial(matricule,caTraite, objectifCa);
-            Assertions.fail("La méthode calculPerformanceCommercial doit lancer une exception");
-        } catch (EmployeException e) {
-            //THEN
-            Assertions.assertThat(e.getMessage()).isEqualTo("Le matricule ne peut être null et doit commencer par un C !");
-        }
-    }
-
-
-    //Test si le matricule en paramètre ne commence pas par un C
-    @Test
-    public void testCalculPerformanceCommercialeMatriculeNoStartWithC() {
-
-        //GIVEN
-        String matricule = "T00001";
-        Long caTraite = 500L;
-        Long objectifCa = 500L;
-
-        //WHEN
-        try {
-            employeService.calculPerformanceCommercial(matricule,caTraite, objectifCa);
-            Assertions.fail("La méthode calculPerformanceCommercial doit lancer une exception");
-        } catch (EmployeException e) {
-            //THEN
-            Assertions.assertThat(e.getMessage()).isEqualTo("Le matricule ne peut être null et doit commencer par un C !");
-        }
-    }
-
     //Test existence client avec le matricule déterminé
     @Test
      void testCalculPerformanceCommercialeMatriculeDontExist() {
@@ -230,6 +190,32 @@ import java.time.LocalDate;
             Assertions.assertThat(e.getMessage()).isEqualTo("Le matricule C35353 n'existe pas !");
         }
     }
+
+
+    // Test si le matricule est null, ne commence pas par un C
+    @ParameterizedTest
+    @CsvSource({
+            "T00001",
+            ", ,"
+    })
+    void testCalculPerformanceCommercialMatriculeNullOrNotBeginWithCOrDontExist(String matricule) {
+
+        //GIVEN
+        Employe employe = new Employe("Doe", "Joe", matricule, LocalDate.now(), 1500d, 1, 1.0);
+        Long caTraite = 1000L;
+        Long objectifCa = 1000L;
+        //WHEN
+        try {
+            employeService.calculPerformanceCommercial(employe.getMatricule(),caTraite, objectifCa);
+            Assertions.fail("La méthode calculPerformanceCommercial doit lancer une exception");
+        } catch (EmployeException e) {
+            //THEN
+            Assertions.assertThat(e.getMessage()).isEqualTo("Le matricule ne peut être null et doit commencer par un C !");
+
+        }
+    }
+
+
 
 
     //Test paramétré calcul performance commerciale
