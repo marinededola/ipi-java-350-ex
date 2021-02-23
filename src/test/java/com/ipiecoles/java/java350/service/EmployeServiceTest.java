@@ -236,7 +236,7 @@ public class EmployeServiceTest {
     @ParameterizedTest
     @CsvSource({
             "2, 600, 1000, 2", //Cas 1 / Autres
-            "1, 1000, 1100, 1", //Cas 2
+            "4, 10, 100, 2", //Cas 2
             "3, 1000, 1000, 4", //Cas 3
             "4, 720, 600, 6", //Cas 4
             "5, 10000, 600, 10", //Cas 5
