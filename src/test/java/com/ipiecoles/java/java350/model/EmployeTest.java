@@ -126,6 +126,16 @@ import java.time.LocalDate;
         Assertions.assertThat(salaireAugmente).isGreaterThanOrEqualTo(Entreprise.SALAIRE_BASE);
     }
 
+    //Test methode getRtt sans parametre
+    @Test
+    void testGetNbrRttNow(){
+       //GIVEN
+       Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
+       //WHEN
+       int nbRtt = employe.getNbRtt();
+       //THEN
+       Assertions.assertThat(nbRtt).isEqualTo(employe.getNbRtt(LocalDate.now()));
+    }
 
     //Test paramétré CSV augmenterSalaire
     @ParameterizedTest(name = "pourcentage{0}, salaire {1}, salaireFinal{2}")
