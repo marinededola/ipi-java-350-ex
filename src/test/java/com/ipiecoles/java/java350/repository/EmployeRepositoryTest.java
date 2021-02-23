@@ -54,6 +54,14 @@ class EmployeRepositoryTest {
         Assertions.assertThat(lastMatricule).isEqualTo("40325");
     }
 
+    @Test
+    void testAvgPerformanceWhereMatriculeStartsWith(){
+
+        employeRepository.save(new Employe("Doe", "John", "C12345", LocalDate.now(), 1500d, 1, 1.0));
+        Double avgPerf = employeRepository.avgPerformanceWhereMatriculeStartsWith("C");
+        Assertions.assertThat(avgPerf).isEqualTo(1);
+    }
+
     @BeforeEach
     @AfterEach
     public void purgeBDD(){

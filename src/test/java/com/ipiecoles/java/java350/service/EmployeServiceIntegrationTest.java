@@ -2,6 +2,7 @@ package com.ipiecoles.java.java350.service;
 
 import com.ipiecoles.java.java350.exception.EmployeException;
 import com.ipiecoles.java.java350.model.Employe;
+import com.ipiecoles.java.java350.model.Entreprise;
 import com.ipiecoles.java.java350.model.NiveauEtude;
 import com.ipiecoles.java.java350.model.Poste;
 import com.ipiecoles.java.java350.repository.EmployeRepository;
@@ -91,4 +92,28 @@ public class EmployeServiceIntegrationTest {
             Assertions.assertThat(e.getMessage()).isEqualTo("L'employé de matricule T00001 existe déjà en BDD");
         }
     }
+
+
+    @Test
+    public void testCalculPerformanceCommerciale() throws EmployeException {
+
+        //GIVEN
+        String nom = "Doe";
+        String prenom = "John";
+        String matricule = "C35353";
+        Long caTraite = 1000L;
+        Long objectifCa = 1000L;
+        Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), 1500d, 3, 1.0);
+        employeRepository.save(employe);
+
+        //WHEN
+        employeService.calculPerformanceCommercial(employe.getMatricule(), caTraite, objectifCa);
+
+        //THEN
+        Employe employeFinal = employeRepository.findByMatricule(employe.getMatricule());
+        Assertions.assertThat(employeFinal.getPerformance()).isEqualTo(6);
+
+    }
+
+
 }
