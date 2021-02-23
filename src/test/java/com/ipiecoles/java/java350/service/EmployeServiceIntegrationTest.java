@@ -2,26 +2,23 @@ package com.ipiecoles.java.java350.service;
 
 import com.ipiecoles.java.java350.exception.EmployeException;
 import com.ipiecoles.java.java350.model.Employe;
-import com.ipiecoles.java.java350.model.Entreprise;
 import com.ipiecoles.java.java350.model.NiveauEtude;
 import com.ipiecoles.java.java350.model.Poste;
 import com.ipiecoles.java.java350.repository.EmployeRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class EmployeServiceIntegrationTest {
 
-    @InjectMocks
+    @Autowired
     private EmployeService employeService;
 
-    @Mock
+    @Autowired
     private EmployeRepository employeRepository;
 
 
@@ -34,69 +31,25 @@ public class EmployeServiceIntegrationTest {
         Poste poste = Poste.TECHNICIEN;
         NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
         Double tempsPartiel = 1.0;
-        Mockito.when(employeRepository.findLastMatricule()).thenReturn(null);
-        Mockito.when(employeRepository.findByMatricule("T00001")).thenReturn(null);
         //WHEN
+        Employe employe = new Employe(nom, prenom, "T00001", LocalDate.now(), 1825.464, 3, 1.0);
+        employeRepository.save(employe);
+
         employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
+
         //THEN
-        ArgumentCaptor<Employe> employeArgumentCaptor = ArgumentCaptor.forClass(Employe.class);
-        Mockito.verify(employeRepository).save(employeArgumentCaptor.capture());
-        Employe employe = employeArgumentCaptor.getValue();
-        Assertions.assertThat(employe).isNotNull();
-        Assertions.assertThat(employe.getNom()).isEqualTo(nom);
-        Assertions.assertThat(employe.getPrenom()).isEqualTo(prenom);
-        Assertions.assertThat(employe.getSalaire()).isEqualTo(1825.464);
-        Assertions.assertThat(employe.getTempsPartiel()).isEqualTo(1.0);
-        Assertions.assertThat(employe.getDateEmbauche()).isEqualTo(LocalDate.now());
-        Assertions.assertThat(employe.getMatricule()).isEqualTo("T00001");
-    }
-
-    @Test
-    public void testEmbaucheLimiteMatricule() {
-        //GIVEN
-        String nom = "Doe";
-        String prenom = "John";
-        Poste poste = Poste.TECHNICIEN;
-        NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
-        Double tempsPartiel = 1.0;
-        Mockito.when(employeRepository.findLastMatricule()).thenReturn("99999");
-        //WHEN
-        try {
-            employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
-            Assertions.fail("embaucheEmploye aurait dû lancer une exception");
-        } catch (EmployeException e) {
-            //Then
-            Assertions.assertThat(e.getMessage()).isEqualTo("Limite des 100000 matricules atteinte !");
-        }
-    }
-
-    @Test
-    public void testEmbaucheEmployeExisteDeja() throws EmployeException {
-
-        //GIVEN
-        String nom = "Doe";
-        String prenom = "John";
-        Poste poste = Poste.TECHNICIEN;
-        NiveauEtude niveauEtude = NiveauEtude.BTS_IUT;
-        Double tempsPartiel = 1.0;
-        Employe employeExistant = new Employe("Doe", "Jane", "T00001", LocalDate.now(), 1500d, 1, 1.0);
-        Mockito.when(employeRepository.findLastMatricule()).thenReturn(null);
-        Mockito.when(employeRepository.findByMatricule("T00001")).thenReturn(employeExistant);
-        //WHEN
-        try {
-            employeService.embaucheEmploye(nom, prenom, poste, niveauEtude, tempsPartiel);
-            Assertions.fail("embaucheEmploye aurait dû lancer une exception");
-        } catch (Exception e){
-            //THEN
-            Assertions.assertThat(e).isInstanceOf(EntityExistsException.class);
-            Assertions.assertThat(e.getMessage()).isEqualTo("L'employé de matricule T00001 existe déjà en BDD");
-        }
+        Employe employeFind = employeRepository.findByMatricule("T00001");
+        Assertions.assertThat(employeFind).isNotNull();
+        Assertions.assertThat(employeFind.getNom()).isEqualTo(nom);
+        Assertions.assertThat(employeFind.getPrenom()).isEqualTo(prenom);
+        Assertions.assertThat(employeFind.getSalaire()).isEqualTo(1825.464);
+        Assertions.assertThat(employeFind.getTempsPartiel()).isEqualTo(1.0);
+        Assertions.assertThat(employeFind.getDateEmbauche()).isEqualTo(LocalDate.now());
+        Assertions.assertThat(employeFind.getMatricule()).isEqualTo("T00001");
     }
 
     //Test intégré calcul performance commerciale
-    //Mise en commentaire de la méthode qui ne fonctionne pas car erreur:
-    //"Le matricule C35353 n'existe pas !"
-   /* @Test
+    @Test
     public void testCalculPerformanceCommerciale() throws EmployeException {
 
         //GIVEN
@@ -111,8 +64,8 @@ public class EmployeServiceIntegrationTest {
         employeService.calculPerformanceCommercial(employe.getMatricule(), caTraite, objectifCa);
         //THEN
         Employe employeFinal = employeRepository.findByMatricule(employe.getMatricule());
-        Assertions.assertThat(employeFinal.getPerformance()).isEqualTo(6);
+        Assertions.assertThat(employeFinal.getPerformance()).isEqualTo(3);
     }
-    */
+
 
 }
