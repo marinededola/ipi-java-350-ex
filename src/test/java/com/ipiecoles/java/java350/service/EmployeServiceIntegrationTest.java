@@ -94,6 +94,7 @@ public class EmployeServiceIntegrationTest {
     }
 
 
+    //Test intégré calcul performance commerciale
     @Test
     public void testCalculPerformanceCommerciale() throws EmployeException {
 
