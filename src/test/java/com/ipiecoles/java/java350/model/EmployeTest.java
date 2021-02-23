@@ -8,10 +8,10 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
 
-public class EmployeTest {
+ class EmployeTest {
 
     @Test
-    public void testGetAnneeAcienneteDateEmbaucheIsNull(){
+     void testGetAnneeAcienneteDateEmbaucheIsNull(){
 
         //GIVEN
         Employe employe = new Employe();
@@ -23,7 +23,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetAnneeAcienneteDateEmbaucheInfNow(){
+     void testGetAnneeAcienneteDateEmbaucheInfNow(){
 
         //GIVEN
         Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().minusYears(6),1500d,1,1.0);
@@ -34,7 +34,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetAnneeAcienneteDateEmbaucheSupNow(){
+     void testGetAnneeAcienneteDateEmbaucheSupNow(){
 
         //GIVEN
         Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().plusYears(6),1500d,1,1.0);
@@ -45,7 +45,7 @@ public class EmployeTest {
     }
 
     @Test
-    public void testGetPrimeAnnuelleMatriculeNull(){
+     void testGetPrimeAnnuelleMatriculeNull(){
 
         //GIVEN
         Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
@@ -63,7 +63,7 @@ public class EmployeTest {
                 "1, 'T12345', 1.0, 2, 1200.0",
                 "1,'M12345',1.0,0,1700.0",
                 "1,'M12345',1.0,3,2000.0"})
-    public void testGetPrimeAnnuelle(Integer perforance,String matricule,Double tauxActivite,Long nbAnneesAnciennete,Double primeAttendue){
+     void testGetPrimeAnnuelle(Integer perforance,String matricule,Double tauxActivite,Long nbAnneesAnciennete,Double primeAttendue){
 
         //GIVEN
         Employe employe = new Employe("Doe","Jonh",matricule, LocalDate.now().minusYears(nbAnneesAnciennete),1500d,perforance,tauxActivite);
@@ -75,7 +75,7 @@ public class EmployeTest {
 
     //Test si le salaire n'est pas null
     @Test
-    public void testSalaireIsNull(){
+     void testSalaireIsNull(){
 
         //GIVEN
         Employe employe = new Employe();
@@ -88,7 +88,7 @@ public class EmployeTest {
 
     // Salaire augmenté par rapport au salaire de base
     @Test
-    public void testSalaireSupSalaireBase(){
+     void testSalaireSupSalaireBase(){
 
         //GIVEN
         Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().minusYears(6),1600d,1,1.0);
@@ -100,7 +100,7 @@ public class EmployeTest {
 
     //Test augmentation du salaire
     @Test
-    public void testAugmenterSalairePourcentage0(){
+     void testAugmenterSalairePourcentage0(){
 
         //GIVEN
         Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().minusYears(6),1500d,1,1.0);
@@ -115,7 +115,7 @@ public class EmployeTest {
     //Test si le salaire augmenté est supérieur au salaire initial
     //Vérifie indirectement que le pourcentage en paramètre est positif
     @Test
-    public void testSalaireIsAugmente(){
+     void testSalaireIsAugmente(){
 
         //GIVEN
         Employe employe = new Employe("Doe","Jonh","T12345", LocalDate.now().minusYears(6),1500d,1,1.0);
@@ -134,7 +134,7 @@ public class EmployeTest {
             "0.5,'1600',1608",
             "25,'160d',200d"})
 
-    public void testAugmenterSalaireManyValue(Double pourcentage,Double salaire,Double salaireFinal){
+     void testAugmenterSalaireManyValue(Double pourcentage,Double salaire,Double salaireFinal){
         //GIVEN
         Employe employe = new Employe("Doe","John",null,LocalDate.now(),salaire,1,1.0);
         //WHEN
@@ -152,7 +152,7 @@ public class EmployeTest {
             "2022-01-01,10",
             "2032-01-01,11",
             "2012-01-01,12"})
-    public void testGetNbrRtt(LocalDate dateReference, int rtt){
+     void testGetNbrRtt(LocalDate dateReference, int rtt){
         //GIVEN
         Employe employe = new Employe("Doe","John",null,LocalDate.now(),1500d,1,1.0);
         //WHEN

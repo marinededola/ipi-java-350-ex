@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 
 @ExtendWith(MockitoExtension.class)
-public class EmployeServiceTest {
+ class EmployeServiceTest {
 
     @InjectMocks
     private EmployeService employeService;
@@ -28,7 +28,7 @@ public class EmployeServiceTest {
     private EmployeRepository employeRepository;
 
     @Test
-    public void testEmbauchePremierEmploye() throws EmployeException {
+     void testEmbauchePremierEmploye() throws EmployeException {
 
         //GIVEN
         String nom = "Doe";
@@ -54,7 +54,7 @@ public class EmployeServiceTest {
     }
 
     @Test
-    public void testEmbaucheLimiteMatricule() {
+     void testEmbaucheLimiteMatricule() {
         //GIVEN
         String nom = "Doe";
         String prenom = "John";
@@ -73,7 +73,7 @@ public class EmployeServiceTest {
     }
 
     @Test
-    public void testEmbaucheEmployeExisteDeja() throws EmployeException {
+     void testEmbaucheEmployeExisteDeja() throws EmployeException {
 
         //GIVEN
         String nom = "Doe";
@@ -97,7 +97,7 @@ public class EmployeServiceTest {
 
     //Test si le chiffre d'affaire traité est null
     @Test
-    public void testCalculPerformanceCommercialeCaTraiteNull() {
+     void testCalculPerformanceCommercialeCaTraiteNull() {
         //GIVEN
         employeRepository.save(new Employe("Doe", "John", "C06432", LocalDate.now(), 1825.464, 1, 1.0));
         String matricule = "C06432";
@@ -115,7 +115,7 @@ public class EmployeServiceTest {
 
     //Test si le chiffre d'affaire traité est négatif
     @Test
-    public void testCalculPerformanceCommercialeCaTraiteNegatif() {
+     void testCalculPerformanceCommercialeCaTraiteNegatif() {
 
         //GIVEN
         employeRepository.save(new Employe("Doe", "John", "C06432", LocalDate.now(), 1825.464, 1, 1.0));
@@ -135,7 +135,7 @@ public class EmployeServiceTest {
 
     //Test si l'objectif de chiffre d'affaire est null
     @Test
-    public void testCalculPerformanceCommercialeObjectifCaNull() {
+     void testCalculPerformanceCommercialeObjectifCaNull() {
         //GIVEN
         employeRepository.save(new Employe("Doe", "John", "C06432", LocalDate.now(), 1825.464, 1, 1.0));
         String matricule = "C06432";
@@ -153,7 +153,7 @@ public class EmployeServiceTest {
 
     //Test si l'objectif de chiffre d'affaire est négatif
     @Test
-    public void testCalculPerformanceCommercialeObjectifCaNegatif() {
+     void testCalculPerformanceCommercialeObjectifCaNegatif() {
 
         //GIVEN
         employeRepository.save(new Employe("Doe", "John", "C06432", LocalDate.now(), 1825.464, 1, 1.0));
@@ -175,7 +175,7 @@ public class EmployeServiceTest {
 
     //Test si le matricule en paramètre est null
     @Test
-    public void testCalculPerformanceCommercialeMatriculeIsNull() {
+     void testCalculPerformanceCommercialeMatriculeIsNull() {
 
         //GIVEN
         String matricule = "null";
@@ -214,7 +214,7 @@ public class EmployeServiceTest {
 
     //Test existence client avec le matricule déterminé
     @Test
-    public void testCalculPerformanceCommercialeMatriculeDontExist() {
+     void testCalculPerformanceCommercialeMatriculeDontExist() {
         //GIVE
         String matricule = "C35353";
 

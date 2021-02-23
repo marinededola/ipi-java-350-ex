@@ -15,7 +15,7 @@ public class EmployeRepositoryIntegrationTest {
 
     @BeforeEach
     @AfterEach
-    public void purgeBDD(){
+     void purgeBDD(){
         employeRepository.deleteAll();
     }
 
@@ -24,7 +24,7 @@ public class EmployeRepositoryIntegrationTest {
 
 
     @Test
-    public void testFindLastMatricule0Employe(){
+     void testFindLastMatricule0Employe(){
 
         //GIVEN
         //WHEN
@@ -34,7 +34,7 @@ public class EmployeRepositoryIntegrationTest {
     }
 
     @Test
-    public void testFindLastMatricule1Employe() {
+     void testFindLastMatricule1Employe() {
 
         //GIVEN
         employeRepository.save(new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0));
@@ -45,7 +45,7 @@ public class EmployeRepositoryIntegrationTest {
     }
 
     @Test
-    public void testFindLastMatriculeNEmploye() {
+     void testFindLastMatriculeNEmploye() {
         //GIVEN
         employeRepository.save(new Employe("Doe", "John", "T12345", LocalDate.now(), 1500d, 1, 1.0));
         employeRepository.save(new Employe("Doe", "John", "M40325", LocalDate.now(), 1500d, 1, 1.0));

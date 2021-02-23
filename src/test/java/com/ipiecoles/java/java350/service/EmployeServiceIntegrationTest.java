@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 
 @SpringBootTest
-public class EmployeServiceIntegrationTest {
+ class EmployeServiceIntegrationTest {
 
     @Autowired
     private EmployeService employeService;
@@ -23,7 +23,7 @@ public class EmployeServiceIntegrationTest {
 
 
     @Test
-    public void testEmbauchePremierEmploye() throws EmployeException {
+     void testEmbauchePremierEmploye() throws EmployeException {
 
         //GIVEN
         String nom = "Doe";
@@ -50,7 +50,7 @@ public class EmployeServiceIntegrationTest {
 
     //Test intégré calcul performance commerciale
     @Test
-    public void testCalculPerformanceCommerciale() throws EmployeException {
+     void testCalculPerformanceCommerciale() throws EmployeException {
 
         //GIVEN
         String nom = "Doe";
