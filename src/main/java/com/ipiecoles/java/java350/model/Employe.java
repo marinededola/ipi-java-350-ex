@@ -1,14 +1,11 @@
 package com.ipiecoles.java.java350.model;
 
-import org.apache.logging.log4j.util.StringBuilders;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 public class Employe {
@@ -65,20 +62,54 @@ public class Employe {
         return getNbRtt(LocalDate.now());
     }
 
-    public Integer getNbRtt(LocalDate d){
-        int i1 = d.isLeapYear() ? 365 : 366;int var = 104;
-        switch (LocalDate.of(d.getYear(),1,1).getDayOfWeek()){
-        case THURSDAY: if(d.isLeapYear()) var =  var + 1; break;
-        case FRIDAY:
-        if(d.isLeapYear()) var =  var + 2;
-        else var =  var + 1;
-case SATURDAY:var = var + 1;
-                    break;
+
+
+    /**
+     * Méthode qui calcule le nombre de jours de RTT dans une année
+     * Au pro-rata du taux d'activité du salarié
+     * Suivant la formule: Nombre de jours dans l'année - Nombre de jours travaillés dans l'année en plein temps
+     * - Nombre de samedi et dimanche dans l'année - Nombre de jours fériés ne tombant pas le week-end
+     * - Nombre de congés payés
+     * @param date choisie comme référence du calcul de RTT
+     * @return Nombre de jours de RTT à la date choisie en paramètre
+     */
+    public Integer getNbRtt(LocalDate date) {
+        int nbJoursAnnee = date.isLeapYear() ? 366 : 365;
+        int nbSamediDimanche = 104;
+        switch (LocalDate.of(date.getYear(), 1, 1).getDayOfWeek()) {
+            case THURSDAY:
+                if (date.isLeapYear()) {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
+                break;
+            case FRIDAY:
+                if (date.isLeapYear()) {
+                    nbSamediDimanche = nbSamediDimanche + 2;
+                }
+                else {
+                    nbSamediDimanche = nbSamediDimanche + 1;
+                }
+                break;
+            case SATURDAY:
+                nbSamediDimanche = nbSamediDimanche + 1;
+                break;
+            default:
+                nbSamediDimanche = 104;
         }
-        int monInt = (int) Entreprise.joursFeries(d).stream().filter(localDate ->
+        int nbJoursFeriesSemaine = (int) Entreprise.joursFeries(date).stream().filter(localDate ->
                 localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
-        return (int) Math.ceil((i1 - Entreprise.NB_JOURS_MAX_FORFAIT - var - Entreprise.NB_CONGES_BASE - monInt) * tempsPartiel);
+        return (int) Math.ceil((
+                nbJoursAnnee
+                        - Entreprise.NB_JOURS_MAX_FORFAIT
+                        - nbSamediDimanche
+                        - Entreprise.NB_CONGES_BASE
+                        - nbJoursFeriesSemaine
+        ) * tempsPartiel);
     }
+
+
+
+
 
     /**
      * Calcul de la prime annuelle selon la règle :
@@ -115,8 +146,22 @@ case SATURDAY:var = var + 1;
         return prime * this.tempsPartiel;
     }
 
-    //Augmenter salaire
-    //public void augmenterSalaire(double pourcentage){}
+    /**
+     * @param pourcentage pourcentage d'augmentation du salaire
+     * Augmentation du salaire actuel selon un pourcentage positif définit
+     * Grace au tests TDD, j'ai pu anticiper les différentes conditions de la méthode,
+     * liées au paramètre pourcentage et au salaire initial
+     */
+    public void augmenterSalaire(double pourcentage){
+        if(this.salaire == null){
+            salaire = Entreprise.SALAIRE_BASE;
+        }
+        if(pourcentage >= 0){
+            Long salaireLong = (Math.round(this.salaire + (this.salaire * pourcentage /100))) ;
+            this.salaire =salaireLong.doubleValue();
+        }
+
+    }
 
     public Long getId() {
         return id;
@@ -211,25 +256,6 @@ case SATURDAY:var = var + 1;
 
     public void setTempsPartiel(Double tempsPartiel) {
         this.tempsPartiel = tempsPartiel;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Employe)) return false;
-        Employe employe = (Employe) o;
-        return Objects.equals(id, employe.id) &&
-                Objects.equals(nom, employe.nom) &&
-                Objects.equals(prenom, employe.prenom) &&
-                Objects.equals(matricule, employe.matricule) &&
-                Objects.equals(dateEmbauche, employe.dateEmbauche) &&
-                Objects.equals(salaire, employe.salaire) &&
-                Objects.equals(performance, employe.performance);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nom, prenom, matricule, dateEmbauche, salaire, performance);
     }
 
     @Override

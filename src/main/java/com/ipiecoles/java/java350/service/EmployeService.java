@@ -57,7 +57,6 @@ public class EmployeService {
 
         //On vérifie l'existence d'un employé avec ce matricule
         if(employeRepository.findByMatricule(matricule) != null){
-            logger.error("L'employé de matricule " + matricule + " existe déjà en BDD");
             throw new EntityExistsException("L'employé de matricule " + matricule + " existe déjà en BDD");
         }
 
@@ -71,7 +70,7 @@ public class EmployeService {
         Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), salaire, Entreprise.PERFORMANCE_BASE, tempsPartiel);
 
         employe = employeRepository.save(employe);
-        logger.info("Employé créé : {}", employe.toString());
+        logger.info("Employé créé : {}", employe);
 
         return employe;
 
@@ -137,7 +136,7 @@ public class EmployeService {
         if(performanceMoyenne != null && performance > performanceMoyenne){
             performance++;
         }
-
+        
         //Affectation et sauvegarde
         employe.setPerformance(performance);
         employeRepository.save(employe);
