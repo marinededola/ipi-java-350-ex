@@ -123,16 +123,17 @@ import java.time.LocalDate;
         employe.augmenterSalaire(5);
         Double salaireAugmente = employe.getSalaire();
         //THEN
-        Assertions.assertThat(salaireAugmente).isGreaterThanOrEqualTo(1500d);
+        Assertions.assertThat(salaireAugmente).isGreaterThanOrEqualTo(Entreprise.SALAIRE_BASE);
     }
 
 
     //Test paramétré CSV augmenterSalaire
     @ParameterizedTest(name = "pourcentage{0}, salaire {1}, salaireFinal{2}")
-    @CsvSource({"10,'160d',176d",
-            "-1,'160d',160d",
-            "0.5,'1600',1608",
-            "25,'160d',200d"})
+    @CsvSource({"10,'1600d',1760d",
+            "-1,'1600d',1600d",
+            "0.5,'1600d',1608d",
+            "5,'1200d', 1260d",
+            "25,'1600d', 2000d"})
 
      void testAugmenterSalaireManyValue(Double pourcentage,Double salaire,Double salaireFinal){
         //GIVEN

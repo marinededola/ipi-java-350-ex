@@ -153,14 +153,14 @@ public class Employe {
      * liées au paramètre pourcentage et au salaire initial
      */
     public void augmenterSalaire(double pourcentage){
-        if(pourcentage >= 0.0){
-            if(this.salaire >= Entreprise.SALAIRE_BASE || this.salaire != null){
-                this.salaire = this.salaire + Math.round(pourcentage/100 * salaire);
-            }else  {
-                this.salaire = Entreprise.SALAIRE_BASE;
-                this.salaire = this.salaire + Math.round(pourcentage/100 * salaire);
-            }
+        if(this.salaire == null){
+            salaire = Entreprise.SALAIRE_BASE;
         }
+        if(pourcentage >= 0){
+            Long salaireLong = (Math.round(this.salaire + (this.salaire * pourcentage /100))) ;
+            this.salaire =salaireLong.doubleValue();
+        }
+
     }
 
     public Long getId() {
